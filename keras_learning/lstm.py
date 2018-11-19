@@ -103,10 +103,11 @@ if __name__ == '__main__':
     freq_list = get_data_info(datas)
     word2index, index2word = lookup_table(freq_list)
     X, y = convert_sequence(datas, word2index)
-    test_datas = databases.get_data_self()
-    Xtest1, ytest1 = convert_sequence(test_datas, word2index)
     """划分数据"""
-    Xtrain, Xtest2, ytrain, ytest2 = train_test_split(X, y, test_size=0.2, random_state=1)
+    Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, test_size=0.2, random_state=1)
+    # 更换测试数据
+    # test_datas = databases.get_data_self()
+    # Xtest, ytest = convert_sequence(test_datas, word2index)
 
     """构建网络"""
     EMBEDDING_SIZE = 128
@@ -120,20 +121,19 @@ if __name__ == '__main__':
     model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     """训练"""
-    # model.fit(Xtrain, ytrain, batch_size=BATCH_SIZE, epochs=EPOCH, validation_data=(Xtest2, ytest2))
-    model.fit(X, y, batch_size=BATCH_SIZE, epochs=EPOCH)  # 全训练
+    model.fit(Xtrain, ytrain, batch_size=BATCH_SIZE, epochs=EPOCH, validation_data=(Xtest, ytest))
 
     """验证"""
-    # score, acc = model.evaluate(Xtest1, ytest1, batch_size=BATCH_SIZE)
-    # print("score:%.2f,acc:%.2f" % (score, acc))
+    score, acc = model.evaluate(Xtest, ytest, batch_size=BATCH_SIZE)
+    print("score:%.2f,acc:%.2f" % (score, acc))
     # ypred = model.predict(Xtest1)
     # for index, pred in enumerate(ypred):
     #     print(pred[0], " :", [index2word[x] for x in Xtest1[index] if x != 0])
     model.save('lstm_model.h5')
     del model  # 删除已经存在的模型
     model = load_model('lstm_model.h5')
-    ypred = model.predict(Xtest1)
+    ypred = model.predict(Xtest)
     for index, pred in enumerate(ypred):
-        print(pred[0], " :", [index2word[x] for x in Xtest1[index] if x != 0])
+        print(pred[0], " :", [index2word[x] for x in Xtest[index] if x != 0])
 
 
