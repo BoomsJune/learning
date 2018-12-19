@@ -12,6 +12,7 @@ def get_data_from_sql():
     获取数据
     [(['word1','word2'],label),(['word1','word2','word3'],label)]
     """
+    # mysql_cn = pymysql.connect(host='10.250.40.99', port=3306, user='root', password='88888888', database='zjy_test')
     mysql_cn = pymysql.connect(host='10.250.40.99', port=3306, user='root', password='88888888', database='zjy_test')
     sql = "SELECT content,sort FROM language_filterdata where sort!=0 and sort!=3"
     cursor = mysql_cn.cursor()
@@ -23,7 +24,8 @@ def get_data_from_sql():
 
 
 def get_data_self():
-    mysql_cn = pymysql.connect(host='192.168.42.112', port=3306, user='unimonitor', password='unimonitor', database='g37')
+    mysql_cn = pymysql.connect(host='192.168.42.112', port=3306, user='unimonitor', password='unimonitor',
+                               database='g37')
     sql = "SELECT subject,comment_count FROM weibo where source like 'taptap%' and comment_count!=0 and length(subject)<200 limit 50"
     cursor = mysql_cn.cursor()
     cursor.execute(sql)

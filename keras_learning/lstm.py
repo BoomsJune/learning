@@ -19,7 +19,7 @@ from datas import databases
 
 SENTENCE_LENGTH = 40  # 每条数据最大长度（根据实际数据调整，这里取大于平均值）
 BATCH_SIZE = 128  # 每次迭代大小（根据训练数据时准确率调整，不宜过小也不宜过大）
-EPOCH = 20  # 迭代次数（根据训练数据时准确率调整）
+EPOCH = 10  # 迭代次数（根据训练数据时准确率调整）
 
 
 def get_data_info(datas):
@@ -46,7 +46,7 @@ def get_data_info(datas):
     freq_list = collections.Counter(words)
     word_len = len(freq_list)  # 不同单词数
 
-    print(np.array(datas))
+    # print(np.array(datas))
     print("data length:%d，Positive length:%d，Negative length:%d" % (data_len, pos_len, neg_len))
     print("word length:%d，word avg length:%.0f，word max length:%d" % (word_len, word_avg_len, word_max_len))
     print("-----------------------------------------------------------------above data info")
